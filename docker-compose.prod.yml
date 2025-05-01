@@ -1,0 +1,68 @@
+name: lost
+services:
+  frontend:
+    container_name: frontend
+    image: ghcr.io/janooski/web/web:pr-2
+    restart: always
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entrypoints=https"
+      - "traefik.http.routers.frontend.rule=Host(`seproj.lost.university`) && !PathPrefix(`/api`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=cloudflare"
+      - "traefik.http.routers.frontend.service=frontend"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+  backend:
+    container_name: backend
+    image: ghcr.io/janooski/backend/backend:pr-4
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY}
+    networks:
+      - proxy
+      - services
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.entrypoints=https"
+      - "traefik.http.routers.backend.rule=Host(`seproj.lost.university`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=cloudflare"
+      - "traefik.http.routers.backend.service=backend"
+      - "traefik.http.services.backend.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+  postgres-db:
+    container_name: postgres-db
+    image: postgres:17.4-alpine
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    networks:
+      - services
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+
+volumes:
+  postgres_db:
+
+networks:
+  proxy:
+    external: true
+  services:
+    external: false
