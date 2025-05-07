@@ -10,7 +10,7 @@ on:
       - '*'
 
 env:
-  MIN_COVERAGE: 68
+  MIN_COVERAGE: 95
 
 jobs:
   lint-test:
@@ -38,9 +38,12 @@ jobs:
       - name: Install dependencies
         working-directory: service
         run: uv sync --frozen --no-cache
-      - name: Run ruff
+      - name: Run ruff format
         working-directory: service
         run: uv run ruff format --check
+      - name: Run ruff check
+        working-directory: service
+        run: uv run ruff check
       - name: Set Envs
         run: |
           echo "POSTGRES_HOST=postgres" >> $GITHUB_ENV

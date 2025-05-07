@@ -1,15 +1,19 @@
-import uuid
+from uuid import UUID
 from datetime import datetime
 
 from sqlmodel import SQLModel
 
 
 class PlanRead(SQLModel):
-    id: uuid.UUID
-    group_version_id: uuid.UUID
+    id: UUID
+    group_version_id: UUID
     name: str
     content: str
-    public_slug: str
-    is_favourite: bool
+    is_favorite: bool
     created_at: datetime
-    user_id: uuid.UUID
+    user_id: UUID
+
+
+class PlanCreate(SQLModel):
+    name: str
+    content: str

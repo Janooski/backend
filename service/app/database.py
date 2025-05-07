@@ -13,6 +13,8 @@ engine = create_engine(postgres_url, echo=True)
 def create_db_and_tables() -> None:
     SQLModel.metadata.create_all(engine)
 
+def drop_tables() -> None:
+    SQLModel.metadata.drop_all(engine)
 
 def get_session() -> Generator[Session, any]:
     with Session(engine) as session:
