@@ -38,3 +38,10 @@ async def delete_plan(request: Request, plan_id: UUID, session: Annotated[Sessio
         plan_service.delete_plan(request.state.user.id, plan_id, session)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
+
+@router.put("/api/plan/favourite/{plan_id}", dependencies=[Depends(auth_dependency)])
+async def favourite_plan(request: Request, plan_id: UUID, session: Annotated[Session, Depends(get_session)]) -> None:
+    try:
+        plan_service.delete_plan(request.state.user.id, plan_id, session)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e

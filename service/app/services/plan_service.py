@@ -1,11 +1,11 @@
+import logging
 from collections.abc import Sequence
 from uuid import UUID
 
 from sqlmodel import Session, select
 
 from ..models.plan import Plan
-from ..schemas.plan import PlanCreate, PlanRead
-
+from ..schemas.plan import PlanCreate, PlanRead, PlanFavourite
 
 def get_plans(user_id: UUID, session: Session) -> Sequence[PlanRead]:
     statement = select(Plan).where(Plan.user_id == user_id)
@@ -31,3 +31,8 @@ def delete_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
         raise ValueError(error_msg)
     session.delete(plan)
     session.commit()
+
+def favourite_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanFavourite:
+    plan = session.get(Plan, plan_id)
+    
+    return None 
