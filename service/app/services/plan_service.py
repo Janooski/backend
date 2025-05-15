@@ -5,8 +5,7 @@ from uuid import UUID
 from sqlmodel import Session, select
 
 from ..models.plan import Plan
-from ..schemas.plan import PlanBookmark, PlanCreate, PlanRead
-
+from ..schemas.plan import PlanCreate, PlanRead, PlanFavourite
 
 def get_plans(user_id: UUID, session: Session) -> Sequence[PlanRead]:
     statement = select(Plan).where(Plan.user_id == user_id).order_by(Plan.bookmark.desc())
@@ -33,6 +32,7 @@ def delete_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
     session.delete(plan)
     session.commit()
 
+<<<<<<< HEAD
 def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmark:
     plan = session.get(Plan, plan_id)
     if not plan or plan.user_id != user_id:
@@ -45,3 +45,9 @@ def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmar
     session.refresh(plan)
     return PlanBookmark.model_validate(plan)
 
+=======
+def favourite_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanFavourite:
+    plan = session.get(Plan, plan_id)
+    
+    return None 
+>>>>>>> c26dc28 (rebase main into feature/bookmark-plans)
