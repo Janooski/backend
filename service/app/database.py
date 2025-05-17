@@ -3,8 +3,8 @@ from collections.abc import Generator
 from typing import Any
 
 from dotenv import load_dotenv
-from sqlmodel import Session, SQLModel, create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlmodel import Session, SQLModel, create_engine
 
 load_dotenv()
 
@@ -22,7 +22,7 @@ def drop_tables() -> None:
     SQLModel.metadata.drop_all(engine)
 
 
-def get_session() -> Generator[Session, Any, None]:
+def get_session() -> Generator[Session, Any]:
     db = SessionLocal()
     try:
         yield db
