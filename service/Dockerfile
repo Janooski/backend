@@ -9,4 +9,4 @@ WORKDIR /app
 
 RUN uv sync --frozen --no-cache --no-dev
 
-CMD ["fastapi", "run", "app/main.py", "--port", "80", "--host", "0.0.0.0"]
+CMD ["fastapi", "run", "app/main.py", "--port", "80", "--host", "0.0.0.0", "--root-path", "/api"]
