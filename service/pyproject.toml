@@ -32,7 +32,6 @@ ignore = [
 
     #### specific rules
     "T201", # print statements
-    "F401", # unused imports
 
     #### tests
     "S101", # asserts allowed in tests
