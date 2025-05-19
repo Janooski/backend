@@ -60,9 +60,9 @@ async def favourite_plan(request: Request, plan_id: UUID, session: Annotated[Ses
     except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to delete plan. Please report to page-admin") from e
 
-@router.put("/api/plan/favourite/{plan_id}", dependencies=[Depends(auth_dependency)])
-async def favourite_plan(request: Request, plan_id: UUID, session: Annotated[Session, Depends(get_session)]) -> None:
+@router.put("/api/plan/bookmark/{plan_id}", dependencies=[Depends(auth_dependency)])
+async def bookmark_plan(request: Request, plan_id: UUID, session: Annotated[Session, Depends(get_session)]) -> None:
     try:
-        plan_service.delete_plan(request.state.user.id, plan_id, session)
+        print('TODO')
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
