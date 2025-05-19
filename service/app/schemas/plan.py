@@ -9,7 +9,7 @@ class PlanRead(SQLModel):
     group_version_id: UUID
     name: str
     content: str
-    is_favorite: bool
+    bookmark: bool
     created_at: datetime
     user_id: UUID
 
@@ -18,6 +18,6 @@ class PlanCreate(SQLModel):
     name: str
     content: str
 
-class PlanFavourite(SQLModel):
+class PlanBookmark(SQLModel):
     id: UUID
-    is_favorite: bool
+    bookmark: bool
