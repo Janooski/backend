@@ -42,6 +42,6 @@ async def delete_plan(request: Request, plan_id: UUID, session: Annotated[Sessio
 @router.put("/api/plan/bookmark/{plan_id}", dependencies=[Depends(auth_dependency)])
 async def bookmark_plan(request: Request, plan_id: UUID, session: Annotated[Session, Depends(get_session)]) -> None:
     try:
-        print('TODO')
+        plan_service.bookmark_plan(request.state.user.id, plan_id, session)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e

@@ -34,5 +34,13 @@ def delete_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
 
 def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmark:
     plan = session.get(Plan, plan_id)
-    
-    return None 
+    if not plan or plan.user_id != user_id:
+        error_msg = "Plan not found or access denied"
+        raise ValueError(error_msg)
+
+    plan.bookmark = not plan.bookmark
+    session.add(plan)
+    session.commit()
+    session.refresh(plan)
+    return PlanBookmark.model_validate(plan)
+
