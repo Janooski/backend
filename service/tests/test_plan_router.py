@@ -80,3 +80,38 @@ def test_delete_nonexisting_plan(test_client: TestClient, get_valid_auth_header:
     assert response.status_code == 200
     data = response.json()
     assert len(data["plans"]) == 1
+
+
+def test_bookmarkPlan(test_client: TestClient, get_valid_auth_header: dict[str, str]) -> None:
+    request_data = {"name": "Test Plan", "content": "Test Content"}
+    response = test_client.post("/api/plan", json=request_data, headers=get_valid_auth_header)
+    assert response.status_code == 201
+    data = response.json()
+    plan_id = data["id"]
+
+    response = test_client.put(f"/api/plan/bookmark/{plan_id}", headers=get_valid_auth_header)
+    assert response.status_code == 200
+
+    response = test_client.get("/api/plans", headers=get_valid_auth_header)
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["plans"]) == 1
+    assert data["plans"][0]["bookmark"] is True
+
+def test_bookmarkPlanTwice(test_client: TestClient, get_valid_auth_header: dict[str, str]) -> None:
+    request_data = {"name": "Test Plan", "content": "Test Content"}
+    response = test_client.post("/api/plan", json=request_data, headers=get_valid_auth_header)
+    assert response.status_code == 201
+    data = response.json()
+    plan_id = data["id"]
+
+    response = test_client.put(f"/api/plan/bookmark/{plan_id}", headers=get_valid_auth_header)
+    assert response.status_code == 200
+    response = test_client.put(f"/api/plan/bookmark/{plan_id}", headers=get_valid_auth_header)
+    assert response.status_code == 200
+
+    response = test_client.get("/api/plans", headers=get_valid_auth_header)
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["plans"]) == 1
+    assert data["plans"][0]["bookmark"] is False
