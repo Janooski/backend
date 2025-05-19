@@ -5,7 +5,7 @@ from uuid import UUID
 from sqlmodel import Session, select
 
 from ..models.plan import Plan
-from ..schemas.plan import PlanCreate, PlanRead, PlanFavourite
+from ..schemas.plan import PlanCreate, PlanRead, PlanBookmark
 
 def get_plans(user_id: UUID, session: Session) -> Sequence[PlanRead]:
     statement = select(Plan).where(Plan.user_id == user_id)
@@ -32,7 +32,7 @@ def delete_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
     session.delete(plan)
     session.commit()
 
-def favourite_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanFavourite:
+def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmark:
     plan = session.get(Plan, plan_id)
     
     return None 
