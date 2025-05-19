@@ -1,5 +1,5 @@
 from database import create_db_and_tables
-from models import plan,user
+from models import plan, user
 
 
 def main() -> None:
