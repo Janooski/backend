@@ -5,7 +5,8 @@ from uuid import UUID
 from sqlmodel import Session, select
 
 from ..models.plan import Plan
-from ..schemas.plan import PlanCreate, PlanRead, PlanBookmark
+from ..schemas.plan import PlanBookmark, PlanCreate, PlanRead
+
 
 def get_plans(user_id: UUID, session: Session) -> Sequence[PlanRead]:
     statement = select(Plan).where(Plan.user_id == user_id).order_by(Plan.bookmark.desc())
