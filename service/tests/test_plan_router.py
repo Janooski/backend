@@ -64,7 +64,7 @@ class TestBookmarkPlan:
         plan_id = response.json()["id"]
 
         response = test_client.patch(f"/plans/bookmark/{plan_id}")
-        assert response.status_code == 200
+        assert response.status_code == 204
 
     def test_bookmark_plan_twice(self, test_client: TestClient) -> None:
         request_data =  {"name": "Test Plan", "content": "Test Content"}
@@ -73,9 +73,9 @@ class TestBookmarkPlan:
         plan_id = response.json()["id"]
 
         response = test_client.patch(f"/plans/bookmark/{plan_id}")
-        assert response.status_code == 200
+        assert response.status_code == 204
         response = test_client.patch(f"/plans/bookmark/{plan_id}")
-        assert response.status_code == 200
+        assert response.status_code == 204
 
     def test_bookmark_nonexisting_plan(self, test_client: TestClient) -> None:
         response = test_client.get("/plans")
