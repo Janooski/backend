@@ -44,6 +44,7 @@ async def delete_plan(request: Request, plan_id: UUID, session: Annotated[Sessio
     except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to delete plan. Please report to page-admin") from e
 
+
 @router.patch("/plans/bookmark/{plan_id}", dependencies=[Depends(auth_dependency)], status_code=204)
 async def bookmark_plan(request: Request, plan_id: UUID, session: Annotated[Session, Depends(get_session)]) -> None:
     try:
