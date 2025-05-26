@@ -1,4 +1,3 @@
-import logging
 from collections.abc import Sequence
 from uuid import UUID
 
@@ -36,19 +35,15 @@ def delete_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
 <<<<<<< HEAD
 def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmark:
     plan = session.get(Plan, plan_id)
-    if not plan or plan.user_id != user_id:
-        error_msg = "Plan not found or access denied"
-        raise ValueError(error_msg)
+    if not plan:
+        raise ValueError(f"Plan with ID {plan_id} not found.")
+    if plan.user_id != user_id:
+        raise ValueError("Access denied: You do not own this plan.")
 
     plan.bookmark = not plan.bookmark
     session.add(plan)
     session.commit()
     session.refresh(plan)
+
     return PlanBookmark.model_validate(plan)
 
-=======
-def favourite_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanFavourite:
-    plan = session.get(Plan, plan_id)
-    
-    return None 
->>>>>>> c26dc28 (rebase main into feature/bookmark-plans)
