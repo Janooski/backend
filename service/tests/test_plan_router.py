@@ -56,6 +56,35 @@ class TestDeletePlan:
         response = test_client.delete(f"/plans/{uuid.uuid4()}")
         assert response.status_code == 404
 
+class TestBookmarkPlan:
+    def test_bookmark_plan(self, test_client: TestClient) -> None:
+        request_data =  {"name": "Test Plan", "content": "Test Content"}
+        response = test_client.post("/plans", json=request_data)
+        assert response.status_code == 201
+        plan_id = response.json()["id"]
+
+        response = test_client.patch(f"/plans/bookmark/{plan_id}")
+        assert response.status_code == 200
+
+    def test_bookmark_plan_twice(self, test_client: TestClient) -> None:
+        request_data =  {"name": "Test Plan", "content": "Test Content"}
+        response = test_client.post("/plans", json=request_data)
+        assert response.status_code == 201
+        plan_id = response.json()["id"]
+
+        response = test_client.patch(f"/plans/bookmark/{plan_id}")
+        assert response.status_code == 200
+        response = test_client.patch(f"/plans/bookmark/{plan_id}")
+        assert response.status_code == 200
+
+    def test_bookmark_nonexisting_plan(self, test_client: TestClient) -> None:
+        response = test_client.get("/plans")
+        assert response.status_code == 200
+        assert len(response.json()["plans"]) == 0
+
+        response = test_client.patch(f"/plans/bookmark/{uuid.uuid4()}")
+        assert response.status_code == 404
+
 
 @pytest.mark.usefixtures("overwrite_session_dependency")
 class TestBadDB:

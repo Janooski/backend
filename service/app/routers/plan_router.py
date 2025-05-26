@@ -49,13 +49,4 @@ async def bookmark_plan(request: Request, plan_id: UUID, session: Annotated[Sess
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e)) from e
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to delete plan. Please report to page-admin") from e
-
-@router.patch("/plans/bookmark/{plan_id}", dependencies=[Depends(auth_dependency)])
-async def bookmark_plan(request: Request, plan_id: UUID, session: Annotated[Session, Depends(get_session)]) -> None:
-    try:
-        print('TODO')
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e)) from e
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to delete plan. Please report to page-admin") from e
+        raise HTTPException(status_code=500, detail="Failed to (un)bookmark plan. Please report to page-admin") from e
