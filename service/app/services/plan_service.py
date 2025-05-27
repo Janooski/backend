@@ -32,6 +32,7 @@ def delete_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
     session.delete(plan)
     session.commit()
 
+
 def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmark:
     plan = session.get(Plan, plan_id)
     if not plan:
