@@ -4,7 +4,7 @@ from uuid import UUID
 from sqlmodel import Session, select
 
 from ..models.plan import Plan
-from ..schemas.plan import PlanBookmark, PlanCreate, PlanRead
+from ..schemas.plan import PlanCreate, PlanRead
 
 
 def get_plans(user_id: UUID, session: Session) -> Sequence[PlanRead]:
@@ -33,7 +33,7 @@ def delete_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
     session.commit()
 
 
-def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmark:
+def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> None:
     plan = session.get(Plan, plan_id)
     if not plan:
         error_msg = f"Plan {plan_id} not found."
@@ -46,5 +46,3 @@ def bookmark_plan(user_id: UUID, plan_id: UUID, session: Session) -> PlanBookmar
     session.add(plan)
     session.commit()
     session.refresh(plan)
-
-    return PlanBookmark.model_validate(plan)

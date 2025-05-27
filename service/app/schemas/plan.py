@@ -17,8 +17,3 @@ class PlanRead(SQLModel):
 class PlanCreate(SQLModel):
     name: str
     content: str
-
-
-class PlanBookmark(SQLModel):
-    id: UUID
-    bookmark: bool

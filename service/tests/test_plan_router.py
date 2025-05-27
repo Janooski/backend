@@ -102,3 +102,7 @@ class TestBadDB:
     def test_delete_plan(self, test_client: TestClient) -> None:
         response = test_client.delete(f"/plans/{uuid.uuid4()}")
         assert response.status_code == 500
+
+    def test_bookmark_plan(self, test_client: TestClient) -> None:
+        response = test_client.patch(f"/plans/bookmark/{uuid.uuid4()}")
+        assert response.status_code == 500
