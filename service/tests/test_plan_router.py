@@ -134,16 +134,22 @@ class TestPublicSlug:
 
 
 class TestPlanHistory:
+    def test_get_plan_history(self, test_client: TestClient) -> None:
+        request_data = {"name": "Test Plan", "content": "Test Content"}
+        response = test_client.post("/plans", json=request_data)
+        assert response.status_code == 201
+        plan_id = response.json()["id"]
+
+        response = test_client.get(f"/plans/history/{plan_id}")
+        assert response.status_code == 200
+        data = response.json()
+        assert len(data["plans"]) == 1
+
     def test_update_plan(self, test_client: TestClient) -> None:
         request_data = {"name": "Test Plan", "content": "Test Content"}
         response = test_client.post("/plans", json=request_data)
         assert response.status_code == 201
-
-        response = test_client.get("/plans")
-        assert response.status_code == 200
-        data = response.json()
-        assert len(data["plans"]) == 1
-        plan_id = data["plans"][0]["id"]
+        plan_id = response.json()["id"]
 
         request_data = {"content": "New Test Content"}
         response = test_client.post(f"/plans/{plan_id}/update", json=request_data)
@@ -151,7 +157,7 @@ class TestPlanHistory:
         data = response.json()
         assert data["content"] == request_data["content"]
 
-    def test_get_plan_history(self, test_client: TestClient) -> None:
+    def test_update_and_get_history(self, test_client: TestClient) -> None:
         request_data = {"name": "Test Plan", "content": "Test Content"}
         response = test_client.post("/plans", json=request_data)
         assert response.status_code == 201
@@ -160,4 +166,10 @@ class TestPlanHistory:
         request_data = {"content": "New Test Content"}
         response = test_client.post(f"/plans/{plan_id}/update", json=request_data)
         assert response.status_code == 201
-        plan_id = response.json()["id"]
+
+        response = test_client.get(f"/plans/history/{plan_id}")
+        assert response.status_code == 200
+        data = response.json()
+        assert len(data["plans"]) == 2
+        assert data["plans"][0]["content"] == "New Test Content"
+        assert data["plans"][1]["content"] == "Test Content"
