@@ -1,13 +1,6 @@
 # Backend
 
-- Ubuntu 24.04.2 LTS
-- Hostname: srbsci-141.ost.ch
-- IP: 10.8.36.141/23
-- DNS: 130.59.31.251(primary)/130.59.31.248
-- all ports are open
-- 2 vCPU, RAM 4096 MB, Drive 50 GB
-- End of life: 2025-10-31 (automatically deleted after this date)
-- Support: <sgi-support@ost.ch>
+Archived and moved to [lost-university organization](https://github.com/orgs/lost-university). 
 
 ## Service
 
